@@ -1,12 +1,14 @@
 <?php
-  
-  require_once("Curl.php");
-  require_once("VK.php");
-  require_once("LongPoll.php");
-  require_once("Doit4Me.php");
-  require_once("PostgresDb.php");
 
   error_reporting(E_ALL);
+  
+  require_once("frameworks/Curl.php");
+  require_once("frameworks/PostgresDb.php");
+  require_once("frameworks/VK.API/SuperUser.php");
+  require_once("frameworks/VK.API/User.php");
+  require_once("frameworks/VK.API/Market.php");
+  require_once("frameworks/VK.API/LongPoll.php");
+  require_once("Doit4Me/Bot.php");
   
   Bot::getInstance()->connectLongPoll();
 
