@@ -27,11 +27,15 @@ class Form
     $this->subject = $subject;
   }
 
-  public function setRequirements($text = "См. вложения", $attachment_ids = null)
+  public function setRequirements($text = null, $attachment_ids = null)
   {
     if ($text)
     {
       $this->requirements->text = $text;
+    }
+    else
+    {
+      $this->requirements->text = "См. вложения";
     }
 
     if ($attachment_ids)
