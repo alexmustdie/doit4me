@@ -9,6 +9,7 @@ class Order
     $id,
     $work,
     $executor_id,
+    $amount,
     $form;
 
   public function __construct($work)
@@ -31,6 +32,7 @@ class Order
         "client_id" => $client_id,
         "executor_id" => $this->executor_id,
         "work_id" => $this->work->getId(),
+        "amount" => $this->amount,
         "time" => date('Y-m-d H:i:s')
       ]);
     }
@@ -53,6 +55,11 @@ class Order
   public function getExecutorId()
   {
     return $this->executor_id;
+  }
+
+  public function getAmount()
+  {
+    return $this->amount;
   }
 
   public function getForm()
@@ -84,6 +91,11 @@ class Order
     {
       $this->executor_id = SuperUser::getInstance()->getId();
     }
+  }
+
+  public function setAmount($amount)
+  {
+    $this->amount = $amount;
   }
 }
 

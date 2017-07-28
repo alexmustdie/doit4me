@@ -5,26 +5,13 @@ require_once("Peer.php");
 
 class Bot extends VK
 {
-  private static
-    $bot = null;
-
   private
     $peers = [];
 
   const
     ACCESS_TOKEN = "3f6c6e222c03055506c32fe1e12fbf244d2ea2ce7c233691d672e60138796e5aebacdefe6422aee747685";
 
-  public static function getInstance()
-  {
-    if (self::$bot == null)
-    {
-      self::$bot = new self();
-    }
-    
-    return self::$bot;
-  }
-
-  private function __construct()
+  public function __construct()
   {
     $this->setAccessToken(self::ACCESS_TOKEN);
     // TODO: get peers from db
@@ -32,7 +19,7 @@ class Bot extends VK
 
   public function connectLongPoll()
   {
-    $lp = new LongPoll();
+    $lp = new LongPoll($this);
     $lp->getUpdates();
   }
 
@@ -150,7 +137,7 @@ class Bot extends VK
             break;
 
           case "TERMS_REQUEST":
-            $text ? $order->getForm()->setTerms($text) : $case = 0;
+            $text && isTerms($text) ? $order->getForm()->setTerms($text) : $case = 0;
             break;
 
           case "NOTES_REQUEST":
@@ -168,7 +155,7 @@ class Bot extends VK
           case "CREATE_ORDER_SUCCESS":
             if ($text == "TEST"
               || ($attachments[0]->type == "money_transfer"
-              && $attachments[0]->amount / 100 == $order->getWork()->getPrice()))
+              && $attachments[0]->amount / 100 == $order->getAmount()))
             {
               $this->sendMessage($peer_id, getReply("MONEY_TRANSFER_SUCCESS")->text);
               $peer->sendOrder();
@@ -191,8 +178,17 @@ class Bot extends VK
         switch ($reply->getAlias())
         {
           case "SET_FORM_VALUE_FAIL":
-            $this->sendMessage($peer_id, $last_reply->getText());
+            $reply_text = $last_reply->getText();
+            $this->sendMessage($peer_id, $reply_text, null, null, $peer->getReplacements($reply_text));
             return false;
+
+          case "REQUIREMENTS_REQUEST":
+            $this->sendMessage($peer_id, getReply("REQUIREMENTS_REQUEST_NOTE")->text);
+            break;
+
+          case "TERMS_REQUEST";
+            $this->sendMessage($peer_id, getReply("TERMS_REQUEST_NOTE")->text);
+            break;
           
           default:
             break;
@@ -206,7 +202,9 @@ class Bot extends VK
       if ($attachments && $attachments[0]->type == "market")
       {
         $work = new Work($attachments[0]->item_id);
+        
         $order = new Order($work);
+        $order->setAmount($work->getPrice());
         
         $peer = new Peer($peer_id);
         $peer->setOrder($order);

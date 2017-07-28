@@ -71,7 +71,7 @@ class Peer
           case "LINE_BREAK":
             $replacements[$template] = "\n";
             break;
-
+          
           case "CLIENT_FIRST_NAME":
             $client = new User($this->id);
             $replacements[$template] = $client->getName()[0];
@@ -95,8 +95,8 @@ class Peer
             $replacements[$template] = $lessons_list;
             break;
 
-          case "WORK_PRICE":
-            $replacements[$template] = $this->order->getWork()->getPrice();
+          case "ORDER_AMOUNT":
+            $replacements[$template] = $this->order->getAmount();
             break;
           
           default:

@@ -10,6 +10,7 @@
   require_once("frameworks/VK.API/LongPoll.php");
   require_once("Doit4Me/Bot.php");
   
-  Bot::getInstance()->connectLongPoll();
+  $bot = new Bot();
+  $bot->connectLongPoll();
 
 ?>

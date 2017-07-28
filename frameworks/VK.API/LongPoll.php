@@ -5,6 +5,7 @@ require_once("LongPollException.php");
 class LongPoll
 {
   private
+    $bot,
     $key,
     $server,
     $ts;
@@ -14,14 +15,15 @@ class LongPoll
     MODE = 2,
     VERSION = 2;
 
-  public function __construct()
+  public function __construct($bot)
   {
+    $this->bot = $bot;
     $this->getServer();
   }
 
   private function getServer()
   {
-    $response = Bot::getInstance()->makeRequest("messages.getLongPollServer", [
+    $response = $this->bot->makeRequest("messages.getLongPollServer", [
       "need_pts" => 1,
       "lp_version" => self::VERSION
     ]);
@@ -114,7 +116,7 @@ class LongPoll
 
               $object->$property = $attachment;
               $message->attachments[$i] = $object;
-              
+
               continue;
             }
 
@@ -125,7 +127,7 @@ class LongPoll
         if (!($message->flags & 2))
         {
           var_dump($message);
-          Bot::getInstance()->replyMessage($message);
+          $this->bot->replyMessage($message);
         }
 
         break;
