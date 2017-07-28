@@ -137,7 +137,7 @@ class Bot extends VK
             break;
 
           case "TERMS_REQUEST":
-            $text && isTerms($text) ? $order->getForm()->setTerms($text) : $case = 0;
+            $text && getDaysLeft($text) > 0 ? $order->getForm()->setTerms($text) : $case = 0;
             break;
 
           case "NOTES_REQUEST":

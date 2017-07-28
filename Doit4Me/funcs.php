@@ -45,11 +45,14 @@
     return (object) $db->getOne("replies");
   }
 
-  function isTerms($terms)
+  function getDaysLeft($terms)
   {
-    if (preg_match("/^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])$/", $terms))
+    if ($last_day = DateTime::createFromFormat("d.m.y", $terms))
     {
-      return true;
+      $today = new DateTime();
+      $interval = $today->diff($last_day);
+
+      return ($interval->invert == 0) ? $interval->days : false;
     }
     else
     {
