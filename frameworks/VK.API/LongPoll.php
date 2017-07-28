@@ -98,6 +98,26 @@ class LongPoll
         {
           foreach ($attachments as $key => $attachment)
           {
+            if (substr($key, 0, 6) == "attach")
+            {
+              $i = $key[6] - 1;
+
+              if (!$object = $message->attachments[$i])
+              {
+                $object = new stdClass();
+              }
+
+              if (!$property = substr($key, 8))
+              {
+                $property = "item_id";
+              }
+
+              $object->$property = $attachment;
+              $message->attachments[$i] = $object;
+              
+              continue;
+            }
+
             $message->$key = $attachment;
           }
         }

@@ -55,17 +55,17 @@ abstract class VK
   {
     $params = ["user_id" => $user_id];
 
-    if (count($attachments) > 0)
+    if ($attachments)
     {
       $params["attachment"] = implode(",", $attachments);
     }
 
-    if (count($forward_messages) > 0)
+    if ($forward_messages)
     {
       $params["forward_messages"] = imlode(",", $forward_messages);
     }
 
-    if (count($replacements) > 0)
+    if ($replacements)
     {
       foreach ($replacements as $template => $replacement)
       {

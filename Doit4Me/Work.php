@@ -13,6 +13,7 @@ class Work extends Market
 
     $this->id = $work_data["id"];
     $this->owner_id = $work_data["owner_id"];
+    $this->title = $work_data["title"];
     $this->price = $work_data["price"];
   }
 

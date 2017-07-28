@@ -17,8 +17,8 @@ class User extends VK
     ]);
    
     $this->id = $response[0]->id;
-    $this->name["first"] = $response[0]->first_name;
-    $this->name["last"] = $response[0]->last_name;
+    $this->name[0] = $response[0]->first_name;
+    $this->name[1] = $response[0]->last_name;
     $this->photo = $response[0]->photo_200;
   }
 

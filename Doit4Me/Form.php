@@ -9,7 +9,13 @@ class Form
     $terms,
     $notes;
 
-  public function __construct() {}
+  public function __construct()
+  {
+    $this->requirements = new stdClass();
+
+    $this->requirements->text = "";
+    $this->requirements->attachment_ids = [];
+  }
 
   public function setLessonId($lesson_id)
   {
@@ -21,9 +27,17 @@ class Form
     $this->subject = $subject;
   }
 
-  public function setRequirements($requirements)
+  public function setRequirements($text = "См. вложения", $attachment_ids = null)
   {
-    $this->requirements = $requirements;
+    if ($text)
+    {
+      $this->requirements->text = $text;
+    }
+
+    if ($attachment_ids)
+    {
+      $this->requirements->attachment_ids = $attachment_ids;
+    }
   }
 
   public function setTerms($terms)

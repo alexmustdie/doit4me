@@ -74,12 +74,12 @@ class Peer
 
           case "CLIENT_FIRST_NAME":
             $client = new User($this->id);
-            $replacements[$template] = $client->getName()["first"];
+            $replacements[$template] = $client->getName()[0];
             break;
 
           case "EXECUTOR_FIRST_NAME":
             $executor = new User($this->order->getExecutorId());
-            $replacements[$template] = $executor->getName()["first"];
+            $replacements[$template] = $executor->getName()[0];
             break;
 
           case "ORDER_ID":
@@ -121,12 +121,13 @@ class Peer
     $message = "ID заказа: {$order->getId()}\n"
       . "Перейти: {$link}\n"
       . "Предмет: " . getLesson($form_data->lesson_id)->title . "\n"
+      . "Тип работы: {$work->getTitle()}\n"
       . "Тема: {$form_data->subject}\n"
-      . "Требования: {$form_data->requirements}\n"
+      . "Требования: {$form_data->requirements->text}\n"
       . "Сроки: {$form_data->terms}\n"
       . "Дополнительно: {$form_data->notes}";
 
-    $super_user->sendMessage($order->getExecutorId(), $message, ["market{$work->getOwnerId()}_{$work->getId()}"]);
+    $super_user->sendMessage($order->getExecutorId(), $message, $form_data->requirements->attachment_ids);
     $this->bot_chatting = false;
   }
 }

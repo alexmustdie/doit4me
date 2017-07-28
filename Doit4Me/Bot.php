@@ -88,13 +88,15 @@ class Bot extends VK
   public function replyMessage($message)
   {
     $peer_id = $message->peer_id;
+    
     $text = $message->text;
+    $attachments = $message->attachments;
 
     if ($peer = $this->getPeer($peer_id))
     {
-      if ($message->attach1_type == "sticker"
-        && $message->attach1_product_id == 1
-        && $message->attach1 == 3)
+      if ($attachments && $attachments[0]->type == "sticker"
+        && $attachments[0]->product_id == 1
+        && $attachments[0]->item_id == 3)
       {
         $this->sendMessage($peer_id, getReply("GOODBYE")->text);
         $this->deletePeer($peer_id);
@@ -130,7 +132,21 @@ class Bot extends VK
             break;
 
           case "REQUIREMENTS_REQUEST":
-            $text ? $order->getForm()->setRequirements($text) : $case = 0;
+            if ($attachments)
+            {
+              $attachment_ids = [];
+
+              foreach ($attachments as $attachment)
+              {
+                if ($attachment->type == "photo"
+                  || $attachment->type == "video"
+                  || $attachment->type == "doc")
+                {
+                  $attachment_ids[] = $attachment->type . $attachment->item_id;
+                }
+              }
+            }
+            $text || count($attachment_ids) > 0 ? $order->getForm()->setRequirements($text, $attachment_ids) : $case = 0;
             break;
 
           case "TERMS_REQUEST":
@@ -151,8 +167,8 @@ class Bot extends VK
 
           case "CREATE_ORDER_SUCCESS":
             if ($text == "TEST"
-              || ($message->attach1_type == "money_transfer"
-              && $message->attach1_amount / 100 == $order->getWork()->getPrice()))
+              || ($attachments[0]->type == "money_transfer"
+              && $attachments[0]->amount / 100 == $order->getWork()->getPrice()))
             {
               $this->sendMessage($peer_id, getReply("MONEY_TRANSFER_SUCCESS")->text);
               $peer->sendOrder();
@@ -187,9 +203,9 @@ class Bot extends VK
     }
     else
     {
-      if ($message->attach1_type == "market")
+      if ($attachments && $attachments[0]->type == "market")
       {
-        $work = new Work($message->attach1);
+        $work = new Work($attachments[0]->item_id);
         $order = new Order($work);
         
         $peer = new Peer($peer_id);

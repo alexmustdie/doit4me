@@ -7,6 +7,7 @@ class Market extends VK
   protected
     $id,
     $owner_id,
+    $title,
     $price;
 
   public function __construct($item_id = null)
@@ -20,6 +21,7 @@ class Market extends VK
 
       $this->id = $items[0]->id;
       $this->owner_id = $items[0]->owner_id;
+      $this->title = $items[0]->title;
       $this->price = $items[0]->price->price;
     }
   }
@@ -32,6 +34,11 @@ class Market extends VK
   public function getOwnerId()
   {
     return $this->owner_id;
+  }
+
+  public function getTitle()
+  {
+    return $this->title;
   }
 
   public function getPrice()
@@ -52,6 +59,7 @@ class Market extends VK
 
     $this->id = $response->market_item_id;
     $this->owner_id = $data["owner_id"];
+    $this->title = $data["name"];
     $this->price = $data["price"];
   }
 
