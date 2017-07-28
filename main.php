@@ -8,9 +8,10 @@
   require_once("frameworks/VK.API/User.php");
   require_once("frameworks/VK.API/Market.php");
   require_once("frameworks/VK.API/LongPoll.php");
-  require_once("Doit4Me/Bot.php");
+  require_once("frameworks/VK.API/Bot.php");
+  require_once("Doit4Me/WorkBot.php");
   
-  $bot = new Bot();
-  $bot->connectLongPoll();
+  $work_bot = new WorkBot();
+  $work_bot->connectLongPoll();
 
 ?>

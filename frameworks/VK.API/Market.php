@@ -22,7 +22,7 @@ class Market extends VK
       $this->id = $items[0]->id;
       $this->owner_id = $items[0]->owner_id;
       $this->title = $items[0]->title;
-      $this->price = $items[0]->price->price;
+      $this->price = $items[0]->price;
     }
   }
 

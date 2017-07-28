@@ -3,73 +3,14 @@
 require_once("funcs.php");
 require_once("Peer.php");
 
-class Bot extends VK
+class WorkBot extends Bot
 {
-  private
-    $peers = [];
-
   const
     ACCESS_TOKEN = "3f6c6e222c03055506c32fe1e12fbf244d2ea2ce7c233691d672e60138796e5aebacdefe6422aee747685";
 
   public function __construct()
   {
     $this->setAccessToken(self::ACCESS_TOKEN);
-    // TODO: get peers from db
-  }
-
-  public function connectLongPoll()
-  {
-    $lp = new LongPoll($this);
-    $lp->getUpdates();
-  }
-
-  private function inPeers($peer_id)
-  {
-    foreach ($this->peers as $i => $peer)
-    {
-      if ($peer_id == $peer->getId())
-      {
-        return $i;
-      }
-    }
-
-    return false;
-  }
-
-  private function getPeer($peer_id)
-  {
-    $i = $this->inPeers($peer_id);
-
-    if ($i !== FALSE)
-    {
-      return $this->peers[$i];
-    }
-
-    return false;
-  }
-
-  private function addPeer($peer)
-  {
-    if (!$this->inPeers($peer->getId()))
-    {
-      $this->peers[] = $peer;
-      return true;
-    }
- 
-    return false;
-  }
-
-  private function deletePeer($peer_id)
-  {
-    $i = $this->inPeers($peer_id);
-
-    if ($i !== FALSE)
-    {
-      unset($this->peers[$i]);
-      return true;
-    }
-
-    return false;
   }
 
   public function replyMessage($message)
@@ -209,7 +150,10 @@ class Bot extends VK
         $peer = new Peer($peer_id);
         $peer->setOrder($order);
 
-        $reply_text = $peer->getLastReply()->getText();
+        $reply = new Reply();
+        $peer->setLastReply($reply);
+
+        $reply_text = $reply->getText();
 
         $this->sendMessage($peer_id, $reply_text, null, null, $peer->getReplacements($reply_text));
         $this->addPeer($peer);

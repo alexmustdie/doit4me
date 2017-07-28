@@ -14,7 +14,6 @@ class Peer
   public function __construct($id)
   {
     $this->id = $id;
-    $this->last_reply = new Reply();
     $this->bot_chatting = true;
   }
 
@@ -124,7 +123,7 @@ class Peer
       . "Тип работы: {$work->getTitle()}\n"
       . "Тема: {$form_data->subject}\n"
       . "Требования: {$form_data->requirements->text}\n"
-      . "Сроки: {$form_data->terms}\n"
+      . "Срок сдачи: {$form_data->terms}\n"
       . "Дополнительно: {$form_data->notes}";
 
     $super_user->sendMessage($order->getExecutorId(), $message, $form_data->requirements->attachment_ids);
