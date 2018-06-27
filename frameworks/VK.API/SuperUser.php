@@ -8,7 +8,7 @@ class SuperUser extends User
     $super_user = null;
 
   const
-    ACCESS_TOKEN = "e760fb05fe9965c037175f72fc74461e7f61840eef8f2a7733c94ec47855649b5a0b283b4655014ad8350";
+    ACCESS_TOKEN = "your access token";
 
   public static function getInstance()
   {

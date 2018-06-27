@@ -6,7 +6,7 @@ require_once("Peer.php");
 class WorkBot extends Bot
 {
   const
-    ACCESS_TOKEN = "3f6c6e222c03055506c32fe1e12fbf244d2ea2ce7c233691d672e60138796e5aebacdefe6422aee747685";
+    ACCESS_TOKEN = "your access token";
 
   public function __construct()
   {
